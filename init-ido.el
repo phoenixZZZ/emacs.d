@@ -12,6 +12,7 @@
 
 (require-package 'smex)
 (global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-x d") 'dired)
 
 (require-package 'idomenu)
 
