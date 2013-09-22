@@ -1,0 +1,14 @@
+# tests/atlocal.  Generated from atlocal.in by configure.                                     -*- shell-script -*-
+# Configurable variable values for GNU test test suite.
+
+PATH=/root/.emacs.d/site-lisp/cflow-1.4/tests:/root/.emacs.d/site-lisp/cflow-1.4/src:$top_srcdir:$srcdir:$PATH
+CFLOWDIR=/root/.emacs.d/site-lisp/cflow-1.4/tests
+#EXAMPLES=/root/.emacs.d/site-lisp/cflow-1.4/examples
+CFLOW_OPTIONS=
+export CFLOW_OPTIONS
+CFLOWRC=/dev/null
+export CFLOWRC
+# On some systems unsetting undefined variable produces an error, so
+# make sure it is defined.
+POSIXLY_CORRECT=0
+unset POSIXLY_CORRECT

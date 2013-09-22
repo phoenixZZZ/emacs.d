@@ -1,0 +1,9 @@
+;;; Automatically generated on Sun Sep 22 13:48:28 2013
+;;; Invoked by root@localhost.localdomain using 24.3.1
+(setq-default session-file-alist '(("/opt/oSIP/src/osip2/ist_fsm.c" 1117 946 1 nil nil 947 (overwrite-mode))))
+(setq-default file-name-history '("/opt/oSIP/src/osip2/ist_fsm.c"))
+(setq-default command-history '((find-file "/opt/oSIP/src/osip2/ist_fsm.c") (list-directory "/opt/oSIP/")))
+(setq-default ido-file-history '("ist_fsm.c" "."))
+(setq-default occur-collect-regexp-history '("\\1"))
+(setq-default smex-history '(set-input-method package-list-packages yyc/cflow-function yc/goto-func find-grep grep gdb))
+(setq-default yes-or-no-p-history '("yes"))

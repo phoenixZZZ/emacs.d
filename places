@@ -1,0 +1,4 @@
+;;; -*- coding: utf-8 -*-
+(("/opt/oSIP/src/osip2/fsm.h" . 5087)
+ ("/opt/oSIP/src/osip2/ict_fsm.c" . 15898)
+ ("/opt/oSIP/src/osip2/osip_transaction.c" . 17898))
