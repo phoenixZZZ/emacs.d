@@ -8,21 +8,25 @@
 (run-with-idle-timer 1 nil 'my-max-window)
 
 ;;==============================CEDET配置Start============================
+
+;;C-h v load-path 检查是否去掉emacs内置cede
+(setq load-path (remove "/usr/share/emacs/24.3/lisp/cedet" load-path))  ;;移除内置的cedet功能,现在都是使用cedet1.1外部源码版
+
 (load-file "~/.emacs.d/site-lisp/cedet-1.1/common/cedet.el")
 (require 'cedet)
 ;;;; 具体说明可参考源码包下的INSTALL文件，或《A Gentle introduction to Cedet》
 ;; Enabling Semantic (code-parsing, smart completion) features
 ;; Select one of the following:
-;;(semantic-load-enable-minimum-features)
-;;(semantic-load-enable-code-helpers)
+(semantic-load-enable-minimum-features)
+(semantic-load-enable-code-helpers)
 ;;(semantic-load-enable-gaudy-code-helpers)
-(semantic-load-enable-excessive-code-helpers)
-(semantic-load-enable-semantic-debugging-helpers)
+;;(semantic-load-enable-excessive-code-helpers) ;;此功能开启会严重影响emacs的执行效率
+;;(semantic-load-enable-semantic-debugging-helpers)
 
 ;;;;配置库文件路径
 (setq semanticdb-project-roots (list (expand-file-name "/")))
 (defconst cedet-user-include-dirs
-  (list "." "./include" 
+  (list "." "./include" "./src"
   ".." "../include" "../inc" "../common" "../public" "../include/sys" "../include/asm" "../include/linux" 
         "../.." "../../include" "../../inc" "../../common" "../../public"
         "/usr/local/apr/include/apr-1"
@@ -31,9 +35,19 @@
 (require 'semantic-c nil 'snoerror)
 (let ((include-dirs cedet-user-include-dirs))
   (mapc (lambda (dir)
-        (semantic-add-system-include dir 'c++-mode)
+;;        (semantic-add-system-include dir 'c++-mode)
         (semantic-add-system-include dir 'c-mode))
         include-dirs)) 
+
+(add-hook 'semantic-init-hooks 'semantic-decoration-mode) ;会对每一个函数进行标注(蓝线标出)
+(add-hook 'semantic-init-hooks 'semantic-idle-completions-mode) ;空闲时进行补全分析
+;;(add-hook 'semantic-init-hooks 'semantic-show-unmatched-syntax-mode) ;将所有cedet没有进行正常解析的部分用红线标出，鼠标悬停会出相应的解释
+
+;; 避免semantic占用CPU过多,单位second(但是开启这个会影响,cedet的代码提示功能) 
+;;(setq-default semantic-idle-scheduler-idle-time 432000)
+
+;;全局关闭cedet #if #else 智能分析 
+;;(setq semantic-c-obey-conditional-section-parsing-flag nil)
 
 ;;;;==================配置文件跳转快捷键Start===================================
 (require 'eieio-opt)  ;;不加的话会报一个eieio的错误
@@ -153,7 +167,7 @@ and when jumping back, it will be removed.")
 
 ;;设置行跳转
 (global-linum-mode t) 
-(global-set-key (kbd "\C-c\C-g") 'goto-line)
+(global-set-key (kbd "\C-x\C-g") 'goto-line)
 
 ;;设置tabbar,C-tab在当前分组内切换,S-tab在分组间切换
 (require 'tabbar)
@@ -185,8 +199,7 @@ and when jumping back, it will be removed.")
 
 (global-set-key (kbd "C-`") 'hjr/ecb-my-switch)
 
-(setq ecb-auto-activate t
-      ecb-tip-of-the-day nil
+(setq ecb-tip-of-the-day nil
       ecb-tree-indent 4
       ecb-windows-height 0.5
       ecb-windows-width 0.20)
