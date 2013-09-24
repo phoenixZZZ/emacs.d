@@ -185,7 +185,7 @@ and when jumping back, it will be removed.")
 
 ;;设置行跳转
 (global-linum-mode t) 
-(global-set-key (kbd "\C-x\C-g") 'goto-line)
+(global-set-key (kbd "\C-c\C-g") 'goto-line)
 
 ;;设置tabbar,C-tab在当前分组内切换,S-tab在分组间切换
 
