@@ -34,10 +34,11 @@
         "/opt/oSIP/include/osipparser2"))
 (require 'semantic-c nil 'snoerror)
 (let ((include-dirs cedet-user-include-dirs))
-  (mapc (lambda (dir)
-;;        (semantic-add-system-include dir 'c++-mode)
-        (semantic-add-system-include dir 'c-mode))
-        include-dirs)) 
+  (mapc
+   (lambda (dir)
+   ;;(semantic-add-system-include dir 'c++-mode)
+   (semantic-add-system-include dir 'c-mode))
+   include-dirs)) 
 
 (add-hook 'semantic-init-hooks 'semantic-decoration-mode) ;会对每一个函数进行标注(蓝线标出)
 (add-hook 'semantic-init-hooks 'semantic-idle-completions-mode) ;空闲时进行补全分析
@@ -191,7 +192,7 @@ and when jumping back, it will be removed.")
 
 (require 'tabbar)
 (tabbar-mode)
-(global-set-key (kbd "<backtab>") 'tabbar-backward-group)
+;(global-set-key (kbd "<backtab>") 'tabbar-backward-group)
 (global-set-key (kbd "C-<tab>") 'tabbar-backward-tab)
 
 ;;代码自动高亮,可以将自定义的函数和变量(只要cedet识别),分别进行高亮
@@ -202,6 +203,32 @@ and when jumping back, it will be removed.")
 (prefer-coding-system 'gb2312)
 (add-hook 'after-init-hook (lambda () (load "init-gui-frames.el")))
 
+;;TAB Blank-mode
+;;(require 'blank-mode)
+;;(global-blank-mode)
+(add-hook 'c-mode-hook
+          (lambda()
+            (setq blank-chars '(trailing newline spaces
+                                tab-mark tabs newline-mark))
+            (blank-mode t)))
+
+;;set TAB's width 
+;; C language setting
+(add-hook 'c-mode-hook
+          '(lambda ()
+             (c-set-style "K&R")
+             (setq tab-width 4)
+             (setq indent-tabs-mode t)
+             (setq c-basic-offset 4)))
+
+;; C++ language setting
+(add-hook 'c++-mode-hook
+          '(lambda ()
+             (c-set-style "K&R")
+             ;;(c-toggle-auto-state)
+             (setq tab-width 4)
+             (setq indent-tabs-mode t)
+             (setq c-basic-offset 4)))
 
 ;;==============================某些插件的使用End============================
 
