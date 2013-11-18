@@ -208,9 +208,9 @@ and when jumping back, it will be removed.")
 ;;(global-blank-mode)
 (add-hook 'c-mode-hook
           (lambda()
-            (setq blank-chars '(trailing newline spaces
+            (setq whitespace-style '(trailing newline spaces
                                 tab-mark tabs newline-mark))
-            (blank-mode t)))
+            (whitespace-mode t)))
 
 ;;set TAB's width 
 ;; C language setting
