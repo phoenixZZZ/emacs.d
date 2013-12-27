@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2003, 2004, 2009 Eric M. Ludlam
 
-;; Author: root <root@localhost.localdomain>
-;; Created: 2013-09-02 16:15:29+0800
+;; Author: root <root@debian>
+;; Created: 2013-12-26 17:32:32+0800
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 
@@ -215,9 +215,15 @@
 ;;
 (require 'semantic-lex)
 
-(define-lex-keyword-type-analyzer wisent-dot-wy--<keyword>-keyword-analyzer
-  "keyword analyzer for <keyword> tokens."
-  "\\(\\sw\\|\\s_\\)+")
+(define-lex-string-type-analyzer wisent-dot-wy--<punctuation>-string-analyzer
+  "string analyzer for <punctuation> tokens."
+  "\\s.+"
+  '((COMMA . ",")
+    (SEMI . ";")
+    (EQUAL . "=")
+    (LINK . "--")
+    (DILINK . "->"))
+  'punctuation)
 
 (define-lex-block-type-analyzer wisent-dot-wy--<block>-block-analyzer
   "block analyzer for <block> tokens."
@@ -236,26 +242,20 @@
   nil
   'symbol)
 
-(define-lex-sexp-type-analyzer wisent-dot-wy--<string>-sexp-analyzer
-  "sexp analyzer for <string> tokens."
-  "\\s\""
-  'string)
-
 (define-lex-regex-type-analyzer wisent-dot-wy--<number>-regexp-analyzer
   "regexp analyzer for <number> tokens."
   semantic-lex-number-expression
   nil
   'number)
 
-(define-lex-string-type-analyzer wisent-dot-wy--<punctuation>-string-analyzer
-  "string analyzer for <punctuation> tokens."
-  "\\s.+"
-  '((COMMA . ",")
-    (SEMI . ";")
-    (EQUAL . "=")
-    (LINK . "--")
-    (DILINK . "->"))
-  'punctuation)
+(define-lex-sexp-type-analyzer wisent-dot-wy--<string>-sexp-analyzer
+  "sexp analyzer for <string> tokens."
+  "\\s\""
+  'string)
+
+(define-lex-keyword-type-analyzer wisent-dot-wy--<keyword>-keyword-analyzer
+  "keyword analyzer for <keyword> tokens."
+  "\\(\\sw\\|\\s_\\)+")
 
 
 ;;; Epilogue

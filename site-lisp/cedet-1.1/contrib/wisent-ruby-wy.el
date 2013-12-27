@@ -2,8 +2,8 @@
 
 ;;; Copyright (C) 2007 Daniel Debertin (debertin@gmail.com)
 
-;; Author: root <root@localhost.localdomain>
-;; Created: 2013-09-02 16:15:32+0800
+;; Author: root <root@debian>
+;; Created: 2013-12-26 17:32:35+0800
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2002, 2003 Vladimir G. Sekissov
 
-;; Author: root <root@localhost.localdomain>
-;; Created: 2013-09-02 16:15:22+0800
+;; Author: root <root@debian>
+;; Created: 2013-12-26 17:32:26+0800
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

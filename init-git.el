@@ -12,7 +12,7 @@
  magit-diff-refine-hunk t
  magit-completing-read-function 'magit-ido-completing-read)
 
-(global-set-key (kbd "C-<f12>") 'magit-status)
+(global-set-key (kbd "s-<f12>") 'magit-status)
 
 (after-load 'magit
   ;; Don't let magit-status mess up window configurations
