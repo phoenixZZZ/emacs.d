@@ -1,4 +1,5 @@
-;;设置默认打开emacs,自动最大化
+
+;;设置默认打开emacs,自动最大化 
 (defun my-max-window()
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
   '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
@@ -7,21 +8,28 @@
 )
 (run-with-idle-timer 1 nil 'my-max-window)
 
-;;==============================CEDET配置Start============================
+;; Load CEDET.
+;; See cedet/common/cedet.info for configuration details.
+;; IMPORTANT: Tou must place this *before* any CEDET component (including
+;; EIEIO) gets activated by another package (Gnus, auth-source, ...).
+(load-file "~/.emacs.d/site-lisp/cedet/cedet-devel-load.el")
 
-;;C-h v load-path 检查是否去掉emacs内置cede
-(setq load-path (remove "/usr/share/emacs/24.3/lisp/cedet" load-path))  ;;移除内置的cedet功能,现在都是使用cedet1.1外部源码版
+;; Add further minor-modes to be enabled by semantic-mode.
+;; See doc-string of `semantic-default-submodes' for other things
+;; you can use here.
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-summary-mode t)
+(add-to-list 'semantic-default-submodes 'global-semantic-idle-completions-mode t)
+(add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode t)
+(add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode t)
 
-(load-file "~/.emacs.d/site-lisp/cedet-1.1/common/cedet.el")
-(require 'cedet)
-;;;; 具体说明可参考源码包下的INSTALL文件，或《A Gentle introduction to Cedet》
-;; Enabling Semantic (code-parsing, smart completion) features
-;; Select one of the following:
-(semantic-load-enable-minimum-features)
-(semantic-load-enable-code-helpers)
-;;(semantic-load-enable-gaudy-code-helpers)
-;;(semantic-load-enable-excessive-code-helpers) ;;此功能开启会严重影响emacs的执行效率
-;;(semantic-load-enable-semantic-debugging-helpers)
+;; Enable Semantic
+(semantic-mode 1)
+
+;; Enable EDE (Project Management) features
+(global-ede-mode 1)
+
+;; Load CEDET CONTRIB.
+(load-file "~/.emacs.d/site-lisp/cedet/contrib/cedet-contrib-load.el")
 
 ;;;;配置库文件路径
 (setq semanticdb-project-roots (list (expand-file-name "/")))
@@ -32,17 +40,15 @@
         "/usr/local/apr/include/apr-1"
         "/opt/oSIP/include/osip2"
         "/opt/oSIP/include/osipparser2"))
-(require 'semantic-c nil 'snoerror)
+;;(require 'semantic-c nil 'snoerror)
 (let ((include-dirs cedet-user-include-dirs))
   (mapc
    (lambda (dir)
    ;;(semantic-add-system-include dir 'c++-mode)
    (semantic-add-system-include dir 'c-mode))
    include-dirs)) 
-
 (add-hook 'semantic-init-hooks 'semantic-decoration-mode) ;会对每一个函数进行标注(蓝线标出)
 (add-hook 'semantic-init-hooks 'semantic-idle-completions-mode) ;空闲时进行补全分析
-;;(add-hook 'semantic-init-hooks 'semantic-show-unmatched-syntax-mode) ;将所有cedet没有进行正常解析的部分用红线标出，鼠标悬停会出相应的解释
 
 ;; 避免semantic占用CPU过多,单位second(但是开启这个会影响,cedet的代码提示功能) 
 ;;(setq-default semantic-idle-scheduler-idle-time 432000)
@@ -105,42 +111,13 @@ and when jumping back, it will be removed.")
   (local-set-key [f8] 'semantic-mrub-switch-tags)  ;;切换跳转位置
   (local-set-key [f9] 'yc/store-mru-tag)    ;;查找某一个已经被分析过的函数
   (local-set-key [f10]'yc/goto-func-any)    ;;当yc/goto-func不管用是尝试下
-  (local-set-key (kbd "C-<f11>") 'eassist-switch-h-cpp)   ;;跳转到相关的h文件中,目前来看只是支持当前工程内的查找
+  (local-set-key (kbd "s-<f10>") 'eassist-switch-h-cpp)   ;;跳转到相关的h文件中,目前来看只是支持当前工程内的查找
   (local-set-key [f11] 'yc/goto-func)       ;;定义跳转
+  (local-set-key (kbd "s-<f11>") 'eassist-list-methods)   ;;跳转到相关的h文件中,目前来看只是支持当前工程内的查找
   (local-set-key [f12] 'yc/return-func)     ;;跳转返回
   (local-set-key (kbd "M-n") 'semantic-ia-complete-symbol-menu)   ;;自动补全
 )
 (add-hook 'c-mode-hook 'setup-program-keybindings) 
-;;;;==================配置文件跳转快捷键End===================================
-
-;;EDE 工程管理
-;;(global-ede-mode t)
-
-;;开启cedet的可是化书签功能 F2添加/删除 S-F2查找书签
-(enable-visual-studio-bookmarks)
-
-;;;;==========================Not Using==========================
-;;;;全局查找类似 search-project
-;;(global-set-key [f7] 'yc/symref)
-;;;;切换跳转位置
-;;(global-set-key [f8] 'semantic-mrub-switch-tags)
-;;;;查找某一个已经被分析过的函数
-;;(global-set-key [f9] 'yc/store-mru-tag)
-;;;;当yc/goto-func不管用是尝试下
-;;(global-set-key [f10] 'yc/goto-func-any)  
-;;;;定义跳转
-;;(global-set-key [f11] 'yc/goto-func)
-;;;;跳转到相关的h文件中,目前来看只是支持当前工程内的查找
-;;(global-set-key (kbd "C-<f11>") 'semantic-analyze-proto-impl-toggle)
-;;(require 'eassist nil 'noerror)
-;;(global-set-key (kbd "C-<f11>") 'eassist-switch-h-cpp)
-;;;;返回跳转前的位置
-;;(global-set-key [f12] 'yc/return-func)
-;;;;代码补全
-;;(define-key c-mode-base-map (kbd "M-n") 'semantic-ia-complete-symbol-menu)
-;;;;==========================Not Using==========================
-
-;;==============================CEDET配置End============================
 
 ;;==============================某些插件的使用Start============================
 (add-to-list 'load-path "~/.emacs.d/")
@@ -233,8 +210,7 @@ and when jumping back, it will be removed.")
 ;;==============================某些插件的使用End============================
 
 ;;==============================ECB的使用Start============================
-(add-to-list 'load-path "~/.emacs.d/site-lisp/ecb-master")
-(load-file "~/.emacs.d/site-lisp/ecb-master/ecb.el")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/ecb")
 (require 'ecb)
 
 ;;设置显示/隐藏ecb快捷键
@@ -293,28 +269,11 @@ inhibit-startup-message t
 
 ;;==============================ECB的使用End============================
 
-;;==============================cflow使用Start============================
-(require 'cflow-mode)
-(defvar cmd nil nil)
-(defvar cflow-buf nil nil)
-(defvar cflow-buf-name nil nil)
- 
-(defun yyc/cflow-function (function-name)
-  "Get call graph of inputed function. "
-  ;(interactive "sFunction name:\n")
-  (interactive (list (car (senator-jump-interactive "Function name: "
-                                                    nil nil nil))))
-  (setq cmd (format "cflow  -b --main=%s %s" function-name buffer-file-name))
-  (setq cflow-buf-name (format "**cflow-%s:%s**"
-                               (file-name-nondirectory buffer-file-name)
-                               function-name))
-  (setq cflow-buf (get-buffer-create cflow-buf-name))
-  (set-buffer cflow-buf)
-  (setq buffer-read-only nil)
-  (erase-buffer)
-  (insert (shell-command-to-string cmd))
-  (pop-to-buffer cflow-buf)
-  (goto-char (point-min))
-  (cflow-mode)
-)
-;;==============================cflow使用End============================
+;;==============================color-theme-start============================
+(add-to-list 'load-path "~/.emacs.d/site-lisp/color-theme-6.6.0")  
+(require 'color-theme-autoloads "color-theme-autoloads") 
+(color-theme-initialize) 
+;;(color-theme-dark-blue2) 
+;;(color-theme-gnome2)
+(set-default-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1") 
+;;==============================color-theme-end============================
