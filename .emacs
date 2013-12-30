@@ -1,5 +1,5 @@
 
-;;设置默认打开emacs,自动最大化 
+;;设置默认打开emacs,自动最大化
 (defun my-max-window()
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
   '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
@@ -156,6 +156,9 @@ and when jumping back, it will be removed.")
 (global-set-key [mouse-5] 'up-slightly)
 (global-set-key [prior] 'down-slightly) 
 (global-set-key [next] 'up-slightly)
+;;Ctrl+鼠标滚轮，调整字体大小
+(global-set-key (kbd "<C-mouse-4>") 'text-scale-increase)
+(global-set-key (kbd "<C-mouse-5>") 'text-scale-decrease)
 
 (require-package 'diminish) ;;添加这个是为了保证在使用cedet时没有error出现
 ;;(require-package 'starter-kit)
@@ -273,7 +276,7 @@ inhibit-startup-message t
 (add-to-list 'load-path "~/.emacs.d/site-lisp/color-theme-6.6.0")  
 (require 'color-theme-autoloads "color-theme-autoloads") 
 (color-theme-initialize) 
-;;(color-theme-dark-blue2) 
+(color-theme-dark-blue2) 
 ;;(color-theme-gnome2)
 (set-default-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1") 
 ;;==============================color-theme-end============================
