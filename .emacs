@@ -35,11 +35,9 @@
 (setq semanticdb-project-roots (list (expand-file-name "/")))
 (defconst cedet-user-include-dirs
   (list "." "./include" "./src"
-  ".." "../include" "../inc" "../common" "../public" "../include/sys" "../include/asm" "../include/linux" 
-        "../.." "../../include" "../../inc" "../../common" "../../public"
-        "/usr/local/apr/include/apr-1"
-        "/opt/oSIP/include/osip2"
-        "/opt/oSIP/include/osipparser2"))
+	".." "../include" "../inc" "../common" "../public" 
+	"../include/sys" "../include/asm" "../include/linux" 
+        "../.." "../../include" "../../inc" "../../common" "../../public"))
 ;;(require 'semantic-c nil 'snoerror)
 (let ((include-dirs cedet-user-include-dirs))
   (mapc
@@ -47,6 +45,12 @@
    ;;(semantic-add-system-include dir 'c++-mode)
    (semantic-add-system-include dir 'c-mode))
    include-dirs)) 
+
+;; 设置semantic cache临时文件的路径，避免到处都是临时文件
+;; (setq semanticdb-default-save-directory "~/.emacs.d/")
+;; C/C++语言启动时自动加载semantic对/usr/include的索引数据库
+;; (setq semanticdb-search-system-databases t)
+
 (add-hook 'semantic-init-hooks 'semantic-decoration-mode) ;会对每一个函数进行标注(蓝线标出)
 (add-hook 'semantic-init-hooks 'semantic-idle-completions-mode) ;空闲时进行补全分析
 
@@ -159,6 +163,8 @@ and when jumping back, it will be removed.")
 ;;Ctrl+鼠标滚轮，调整字体大小
 (global-set-key (kbd "<C-mouse-4>") 'text-scale-increase)
 (global-set-key (kbd "<C-mouse-5>") 'text-scale-decrease)
+;;替换选区文字
+(delete-selection-mode t)
 
 (require-package 'diminish) ;;添加这个是为了保证在使用cedet时没有error出现
 ;;(require-package 'starter-kit)
@@ -238,16 +244,15 @@ inhibit-startup-message t
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
-
  ;; If there is more than one, they won't work right.
  '(ecb-debug-mode t)
  '(ecb-layout-window-sizes (quote (("left8" (ecb-directories-buffer-name 0.1927710843373494 . 0.28205128205128205) (ecb-sources-buffer-name 0.1927710843373494 . 0.23076923076923078) (ecb-methods-buffer-name 0.1927710843373494 . 0.28205128205128205) (ecb-history-buffer-name 0.1927710843373494 . 0.1794871794871795)))))
  '(ecb-options-version "2.40")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
  '(ecb-source-path (quote ("/")))
+ '(semantic-c-dependency-system-include-path (quote ("/usr/include" "/home/huangjunren/WorkingSpace/oSIP/include/osip2" "/home/huangjunren/WorkingSpace/oSIP/include/osipparser2" "/opt/apr/include" "/opt/apr-util/include" "/opt/hiredis")))
  '(split-width-threshold 160))
 (custom-set-faces
-
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
@@ -278,5 +283,6 @@ inhibit-startup-message t
 (color-theme-initialize) 
 (color-theme-dark-blue2) 
 ;;(color-theme-gnome2)
-(set-default-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1") 
+(set-default-font "-unknown-DejaVu Sans Mono-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1") 
 ;;==============================color-theme-end============================
+(set-locale-environment "zh_CN.UTF-8")
