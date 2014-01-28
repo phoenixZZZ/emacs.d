@@ -1,4 +1,3 @@
-
 ;;设置默认打开emacs,自动最大化
 (defun my-max-window()
   (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
@@ -47,12 +46,14 @@
    include-dirs)) 
 
 ;; 设置semantic cache临时文件的路径，避免到处都是临时文件
-;; (setq semanticdb-default-save-directory "~/.emacs.d/")
+(setq semanticdb-default-save-directory "~/.emacs.d/")
 ;; C/C++语言启动时自动加载semantic对/usr/include的索引数据库
 ;; (setq semanticdb-search-system-databases t)
 
 (add-hook 'semantic-init-hooks 'semantic-decoration-mode) ;会对每一个函数进行标注(蓝线标出)
 (add-hook 'semantic-init-hooks 'semantic-idle-completions-mode) ;空闲时进行补全分析
+
+(setq auto-save-hook nil)  ;;把auto-save-hook清空,解决卡死.
 
 ;; 避免semantic占用CPU过多,单位second(但是开启这个会影响,cedet的代码提示功能) 
 ;;(setq-default semantic-idle-scheduler-idle-time 432000)
@@ -143,8 +144,6 @@ and when jumping back, it will be removed.")
 
 (require 'init-ido)       ;;设置ido相关(命令补全)
 
-(require 'highlight-symbol)
-(highlight-symbol-mode 1)
 (global-set-key (kbd "C-c M-h") 'highlight-symbol-at-point)
 (global-set-key (kbd "C-c M-r") 'highlight-symbol-remove-all)
 (global-set-key (kbd "C-c M-n") 'highlight-symbol-next)
@@ -166,6 +165,9 @@ and when jumping back, it will be removed.")
 ;;替换选区文字
 (delete-selection-mode t)
 
+(global-set-key (kbd "C-y") 'c-end-of-statement)
+(global-set-key (kbd "M-e") 'yank)
+
 (require-package 'diminish) ;;添加这个是为了保证在使用cedet时没有error出现
 ;;(require-package 'starter-kit)
 ;;(provide 'init-starter-kit)
@@ -182,7 +184,12 @@ and when jumping back, it will be removed.")
 (global-set-key (kbd "C-<tab>") 'tabbar-backward-tab)
 
 ;;代码自动高亮,可以将自定义的函数和变量(只要cedet识别),分别进行高亮
+(require 'highlight-symbol)
+(add-hook 'c-mode-hook 'highlight-symbol-mode)
+;;(highlight-symbol-mode)
+
 (require 'zjl-hl)
+;;(add-hook 'c-mode-hook 'zjl-hl-enable-global-all-modes)
 (zjl-hl-enable-global-all-modes)
 
 ;;设置中文显示支持
